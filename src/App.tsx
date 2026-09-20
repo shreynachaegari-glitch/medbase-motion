@@ -12,7 +12,9 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 function App() {
     return (
         <ErrorBoundary>
-            <BrowserRouter>
+            {/* import.meta.env.BASE_URL tracks vite.config.ts's `base` (e.g. "/medbase-motion/"
+                on GitHub Pages, "/" in dev) so routes resolve correctly under either. */}
+            <BrowserRouter basename={import.meta.env.BASE_URL}>
                 <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/learn" element={<LearnPage />} />
