@@ -6,6 +6,7 @@ import HeroSimulation from "@/components/HeroSimulation";
 import Reveal from "@/components/motion/Reveal";
 import { literature, openQuestions } from "@/data/evidence";
 import { diseases, modelledConditions } from "@/data/knowledge";
+import { databases } from "@/data/sources/registry";
 
 const flow = [
     { step: "01", title: "Evidence", body: "Published effect sizes, attached to the paper they came from." },
@@ -22,7 +23,8 @@ const Index = () => {
     const stats = [
         { value: String(diseases.length), label: "Condition records" },
         { value: String(modelFeeding.length), label: "Cited parameters" },
-        { value: "2,000", label: "Virtual patients per run" },
+        { value: String(databases.length), label: "Live research databases" },
+        { value: "2,000", label: "Virtual patients per arm" },
         { value: "0", label: "Validated clinical claims", accent: true },
     ];
 
@@ -125,7 +127,7 @@ const Index = () => {
                                     delay: 0.22,
                                 }}
                             >
-                                <div className="mb-3 flex items-baseline justify-between">
+                                <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                                     <span className="label-caps">Live model output</span>
                                     <span className="tnum text-[11px] text-muted-foreground">
                                         HbA1c 8.0% · drift 0.35%/yr
@@ -144,9 +146,14 @@ const Index = () => {
                 {/* Stats */}
                 <section className="border-b border-border">
                     <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
-                        <dl className="grid grid-cols-2 gap-px bg-border lg:grid-cols-4">
+                        <dl className="grid grid-cols-2 gap-px bg-border lg:grid-cols-5">
                             {stats.map((s, i) => (
-                                <Reveal key={s.label} index={i} className="bg-background p-6">
+                                <Reveal
+                                    key={s.label}
+                                    index={i}
+                                    // An odd count leaves a hole in the two-column grid; the last cell spans it.
+                                    className={`bg-background p-6 ${i === stats.length - 1 ? "col-span-2 lg:col-span-1" : ""}`}
+                                >
                                     <dt className="label-caps">{s.label}</dt>
                                     <dd
                                         className={`tnum mt-2 text-3xl ${
@@ -199,9 +206,11 @@ const Index = () => {
                                 <p className="label-caps mt-3">For researchers</p>
                                 <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
                                     The Lab keeps no condition list of its own. It loads a MedBase
-                                    record carrying a model binding, then runs it: virtual patients,
+                                    record and runs its model where one exists — virtual patients,
                                     comparison arms, seeded cohorts, and a sensitivity pass that
-                                    names the assumption driving the result.
+                                    names the assumption driving the result. For every record it
+                                    also queries {databases.length} live research databases:
+                                    literature, trials, drug labels and gene–disease evidence.
                                 </p>
                                 <Link
                                     to="/lab"

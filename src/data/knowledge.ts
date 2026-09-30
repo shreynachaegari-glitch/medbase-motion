@@ -19,6 +19,17 @@ export interface Disease {
         url: string;
     }[];
     keywords: string[];
+    /**
+     * Starting points for the Lab's live database panels. These are lookups to run, not
+     * claims: a gene listed here is one worth looking up for the condition (a replicated
+     * locus, a pathway member or a drug target), never an assertion that it causes it.
+     */
+    research: {
+        /** The term literature and trial searches start from. */
+        term: string;
+        drugs: string[];
+        genes: string[];
+    };
     labModel?: {
         /** The only implemented model today; lives in src/sim. */
         id: "t2d-progression";
@@ -71,6 +82,7 @@ export const diseases: Disease[] = [
             { name: "TGA", url: "https://www.tga.gov.au" }
         ],
         keywords: ["diabetes", "blood sugar", "insulin", "type 1", "type 2", "glucose"],
+        research: { term: "type 2 diabetes", drugs: ["metformin", "empagliflozin", "semaglutide", "glipizide", "pioglitazone"], genes: ["TCF7L2", "KCNJ11", "PPARG", "SLC30A8"] },
         labModel: {
             id: "t2d-progression",
             label: "Type 2 diabetes progression",
@@ -118,7 +130,8 @@ export const diseases: Disease[] = [
             { name: "WHO", url: "https://www.who.int/news-room/fact-sheets/detail/hypertension" },
             { name: "MedlinePlus", url: "https://medlineplus.gov/highbloodpressure.html" }
         ],
-        keywords: ["hypertension", "high blood pressure", "bp", "cardiovascular"]
+        keywords: ["hypertension", "high blood pressure", "bp", "cardiovascular"],
+        research: { term: "hypertension", drugs: ["amlodipine", "lisinopril", "losartan", "hydrochlorothiazide"], genes: ["AGT", "ACE", "AGTR1"] }
     },
     {
         id: "dengue",
@@ -159,7 +172,8 @@ export const diseases: Disease[] = [
             { name: "MedlinePlus", url: "https://medlineplus.gov/dengue.html" },
             { name: "ICMR", url: "https://icmr.gov.in" }
         ],
-        keywords: ["dengue", "mosquito", "fever", "aedes", "viral"]
+        keywords: ["dengue", "mosquito", "fever", "aedes", "viral"],
+        research: { term: "dengue", drugs: ["acetaminophen"], genes: [] }
     },
     {
         id: "malaria",
@@ -199,7 +213,8 @@ export const diseases: Disease[] = [
             { name: "MedlinePlus", url: "https://medlineplus.gov/malaria.html" },
             { name: "NVBDCP", url: "https://nvbdcp.gov.in" }
         ],
-        keywords: ["malaria", "mosquito", "plasmodium", "fever", "anopheles"]
+        keywords: ["malaria", "mosquito", "plasmodium", "fever", "anopheles"],
+        research: { term: "malaria", drugs: ["artemether", "atovaquone", "chloroquine", "primaquine"], genes: ["HBB", "G6PD", "ACKR1"] }
     },
     {
         id: "covid-19",
@@ -241,7 +256,8 @@ export const diseases: Disease[] = [
             { name: "Gov UK - COVID-19", url: "https://www.gov.uk/coronavirus" },
             { name: "TGA - COVID-19", url: "https://www.tga.gov.au/products/covid-19" }
         ],
-        keywords: ["covid", "coronavirus", "sars-cov-2", "pandemic", "respiratory"]
+        keywords: ["covid", "coronavirus", "sars-cov-2", "pandemic", "respiratory"],
+        research: { term: "COVID-19", drugs: ["nirmatrelvir", "remdesivir", "dexamethasone", "baricitinib"], genes: ["ACE2", "TMPRSS2"] }
     },
     {
         id: "tuberculosis",
@@ -281,7 +297,8 @@ export const diseases: Disease[] = [
             { name: "MedlinePlus", url: "https://medlineplus.gov/tuberculosis.html" },
             { name: "RNTCP India", url: "https://tbcindia.gov.in" }
         ],
-        keywords: ["tuberculosis", "tb", "lung infection", "bacterial", "dots"]
+        keywords: ["tuberculosis", "tb", "lung infection", "bacterial", "dots"],
+        research: { term: "tuberculosis", drugs: ["isoniazid", "rifampin", "pyrazinamide", "ethambutol", "bedaquiline"], genes: ["IFNGR1", "IL12RB1"] }
     },
     {
         id: "typhoid",
@@ -319,7 +336,8 @@ export const diseases: Disease[] = [
             { name: "WHO", url: "https://www.who.int/news-room/fact-sheets/detail/typhoid" },
             { name: "MedlinePlus", url: "https://medlineplus.gov/typhoidfever.html" }
         ],
-        keywords: ["typhoid", "salmonella", "fever", "water-borne", "food poisoning"]
+        keywords: ["typhoid", "salmonella", "fever", "water-borne", "food poisoning"],
+        research: { term: "typhoid fever", drugs: ["ciprofloxacin", "azithromycin", "ceftriaxone"], genes: [] }
     },
     {
         id: "cholera",
@@ -357,7 +375,8 @@ export const diseases: Disease[] = [
             { name: "WHO", url: "https://www.who.int/news-room/fact-sheets/detail/cholera" },
             { name: "MedlinePlus", url: "https://medlineplus.gov/cholera.html" }
         ],
-        keywords: ["cholera", "diarrhea", "water-borne", "dehydration", "ors"]
+        keywords: ["cholera", "diarrhea", "water-borne", "dehydration", "ors"],
+        research: { term: "cholera", drugs: ["doxycycline", "azithromycin"], genes: ["CFTR"] }
     },
     {
         id: "asthma",
@@ -397,7 +416,8 @@ export const diseases: Disease[] = [
             { name: "WHO", url: "https://www.who.int/news-room/fact-sheets/detail/asthma" },
             { name: "MedlinePlus", url: "https://medlineplus.gov/asthma.html" }
         ],
-        keywords: ["asthma", "breathing", "wheezing", "inhaler", "respiratory"]
+        keywords: ["asthma", "breathing", "wheezing", "inhaler", "respiratory"],
+        research: { term: "asthma", drugs: ["albuterol", "budesonide", "fluticasone", "montelukast"], genes: ["ORMDL3", "IL33", "TSLP"] }
     },
     {
         id: "heart-disease",
@@ -442,7 +462,8 @@ export const diseases: Disease[] = [
             { name: "MedlinePlus", url: "https://medlineplus.gov/coronaryarterydisease.html" },
             { name: "Gov UK", url: "https://www.gov.uk/health-and-social-care" }
         ],
-        keywords: ["heart disease", "coronary", "heart attack", "angina", "cardiovascular"]
+        keywords: ["heart disease", "coronary", "heart attack", "angina", "cardiovascular"],
+        research: { term: "coronary artery disease", drugs: ["atorvastatin", "aspirin", "metoprolol", "clopidogrel"], genes: ["LDLR", "PCSK9", "APOB", "LPA"] }
     },
     {
         id: "myocardial-infarction",
@@ -482,7 +503,8 @@ export const diseases: Disease[] = [
             { name: "WHO", url: "https://www.who.int/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds)" },
             { name: "MedlinePlus", url: "https://medlineplus.gov/heartattack.html" }
         ],
-        keywords: ["heart attack", "myocardial infarction", "chest pain", "cardiovascular"]
+        keywords: ["heart attack", "myocardial infarction", "chest pain", "cardiovascular"],
+        research: { term: "myocardial infarction", drugs: ["aspirin", "clopidogrel", "ticagrelor", "alteplase"], genes: ["PCSK9", "LDLR", "LPA"] }
     },
     {
         id: "heart-failure",
@@ -527,7 +549,8 @@ export const diseases: Disease[] = [
             { name: "WHO", url: "https://www.who.int/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds)" },
             { name: "MedlinePlus", url: "https://medlineplus.gov/heartfailure.html" }
         ],
-        keywords: ["heart failure", "congestive heart failure", "cardiovascular", "edema", "shortness of breath"]
+        keywords: ["heart failure", "congestive heart failure", "cardiovascular", "edema", "shortness of breath"],
+        research: { term: "heart failure", drugs: ["sacubitril", "carvedilol", "spironolactone", "furosemide", "dapagliflozin"], genes: ["TTN", "MYH7", "LMNA"] }
     },
     {
         id: "anemia",
@@ -567,7 +590,8 @@ export const diseases: Disease[] = [
             { name: "WHO", url: "https://www.who.int/health-topics/anaemia" },
             { name: "MedlinePlus", url: "https://medlineplus.gov/anemia.html" }
         ],
-        keywords: ["anemia", "iron deficiency", "blood", "hemoglobin", "fatigue"]
+        keywords: ["anemia", "iron deficiency", "blood", "hemoglobin", "fatigue"],
+        research: { term: "iron deficiency anemia", drugs: ["ferrous sulfate", "cyanocobalamin", "folic acid"], genes: ["HBB", "TMPRSS6", "G6PD"] }
     },
     {
         id: "diarrhea",
@@ -606,7 +630,8 @@ export const diseases: Disease[] = [
             { name: "WHO", url: "https://www.who.int/news-room/fact-sheets/detail/diarrhoeal-disease" },
             { name: "MedlinePlus", url: "https://medlineplus.gov/diarrhea.html" }
         ],
-        keywords: ["diarrhea", "loose stools", "dehydration", "ors", "stomach"]
+        keywords: ["diarrhea", "loose stools", "dehydration", "ors", "stomach"],
+        research: { term: "diarrhea", drugs: ["loperamide", "rifaximin"], genes: [] }
     },
     {
         id: "cataract",
@@ -646,7 +671,8 @@ export const diseases: Disease[] = [
             { name: "WHO", url: "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment" },
             { name: "MedlinePlus", url: "https://medlineplus.gov/cataract.html" }
         ],
-        keywords: ["cataract", "blurry vision", "eye", "cloudy lens", "blindness"]
+        keywords: ["cataract", "blurry vision", "eye", "cloudy lens", "blindness"],
+        research: { term: "cataract", drugs: [], genes: ["CRYAA"] }
     },
     {
         id: "glaucoma",
@@ -684,7 +710,8 @@ export const diseases: Disease[] = [
             { name: "WHO", url: "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment" },
             { name: "MedlinePlus", url: "https://medlineplus.gov/glaucoma.html" }
         ],
-        keywords: ["glaucoma", "optic nerve", "eye pressure", "vision loss", "eye"]
+        keywords: ["glaucoma", "optic nerve", "eye pressure", "vision loss", "eye"],
+        research: { term: "glaucoma", drugs: ["latanoprost", "timolol", "brimonidine", "dorzolamide"], genes: ["MYOC", "OPTN", "CYP1B1"] }
     },
     {
         id: "diabetic-retinopathy",
@@ -720,7 +747,8 @@ export const diseases: Disease[] = [
             { name: "WHO", url: "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment" },
             { name: "MedlinePlus", url: "https://medlineplus.gov/diabeticretinopathy.html" }
         ],
-        keywords: ["diabetic retinopathy", "diabetes", "vision loss", "retina", "eye"]
+        keywords: ["diabetic retinopathy", "diabetes", "vision loss", "retina", "eye"],
+        research: { term: "diabetic retinopathy", drugs: ["aflibercept", "ranibizumab", "faricimab"], genes: ["VEGFA"] }
     }
 ];
 
