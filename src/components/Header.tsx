@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AuthButton } from "@/components/ResearcherAuth";
+import { LANGS, useLang, type LangId } from "@/i18n";
 
 const nav = [
     { to: "/learn", label: "Learn" },
@@ -15,6 +16,21 @@ const nav = [
 
 const Header = () => {
     const { pathname } = useLocation();
+    const { t, lang, setLang } = useLang();
+    const picker = (
+        <select
+            value={lang}
+            onChange={(e) => setLang(e.target.value as LangId)}
+            aria-label={t("Language")}
+            className="rounded-md border border-border bg-background px-2 py-1.5 text-sm"
+        >
+            {LANGS.map((l) => (
+                <option key={l.id} value={l.id}>
+                    {l.label}
+                </option>
+            ))}
+        </select>
+    );
     const [open, setOpen] = useState(false);
 
     return (
@@ -39,7 +55,7 @@ const Header = () => {
                                         : "text-muted-foreground hover:text-foreground",
                                 )}
                             >
-                                {item.label}
+                                {t(item.label)}
                                 {/* Moves only on navigation — state indication, not decoration. */}
                                 {active && (
                                     <motion.span
@@ -57,7 +73,7 @@ const Header = () => {
                     })}
                 </nav>
 
-                <div className="hidden sm:block"><AuthButton /></div>
+                <div className="hidden items-center gap-2 sm:flex">{picker}<AuthButton /></div>
 
                 {/* Five links do not fit beside the wordmark on a phone, so they fold into a menu. */}
                 <button
@@ -79,7 +95,7 @@ const Header = () => {
                     className="border-t border-border px-2 pb-3 pt-2 sm:hidden"
                     onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
                 >
-                    <div className="px-1 pb-2"><AuthButton /></div>
+                    <div className="flex items-center gap-2 px-1 pb-2">{picker}<AuthButton /></div>
                     {nav.map((item) => (
                         <NavLink
                             key={item.to}
@@ -92,7 +108,7 @@ const Header = () => {
                                 )
                             }
                         >
-                            {item.label}
+                            {t(item.label)}
                         </NavLink>
                     ))}
                 </nav>

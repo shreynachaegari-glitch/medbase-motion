@@ -4,6 +4,7 @@ import Index from "@/pages/Index";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import ScrollManager from "@/components/ScrollManager";
 import Chatbot from "@/components/Chatbot";
+import { LangProvider } from "@/i18n";
 import { AuthProvider } from "@/components/ResearcherAuth";
 
 // Each page past the landing page loads on first visit, so the landing page no longer ships
@@ -28,6 +29,7 @@ function App() {
         <ErrorBoundary>
             {/* import.meta.env.BASE_URL tracks vite.config.ts's `base` (e.g. "/medbase-motion/"
                 on GitHub Pages, "/" in dev) so routes resolve correctly under either. */}
+            <LangProvider>
             <AuthProvider>
             <BrowserRouter basename={import.meta.env.BASE_URL}>
                 <ScrollManager />
@@ -46,6 +48,7 @@ function App() {
                 </Suspense>
             </BrowserRouter>
             </AuthProvider>
+            </LangProvider>
         </ErrorBoundary>
     );
 }

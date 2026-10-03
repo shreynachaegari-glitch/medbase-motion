@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, type FormEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { useLang } from "@/i18n";
 import { LogIn, LogOut, X } from "lucide-react";
 
 /**
@@ -60,6 +61,7 @@ export const useResearcher = () => {
 };
 
 export const AuthButton = () => {
+    const { t } = useLang();
     const { researcher, signIn, signOut } = useResearcher();
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
@@ -95,7 +97,7 @@ export const AuthButton = () => {
                 className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-sm hover:bg-secondary"
             >
                 <LogIn className="h-4 w-4" aria-hidden="true" />
-                Researcher sign in
+                {t("Researcher sign in")}
             </button>
             {open && createPortal(
                 <div
