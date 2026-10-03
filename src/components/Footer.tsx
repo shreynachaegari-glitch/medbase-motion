@@ -37,7 +37,7 @@ const Footer = () => (
                 <Link to="/evidence#databases" className="hover:text-foreground hover:underline">
                     see which, and their caveats
                 </Link>
-                . Prototype build — re-verify every parameter and snapshot before research use.
+                .
             </p>
         </div>
     </footer>
