@@ -93,7 +93,7 @@ const SimulatePanel = ({
     const { copied, copy } = useCopy();
 
     // Sliders stay responsive: the cohort recomputes against a deferred copy of the config,
-    // so a drag never waits on 2,000 simulated patients per arm.
+    // so a drag never waits on a large simulated cohort.
     const deferred = useDeferredValue(config);
     const stale = deferred !== config;
     const run = useMemo(() => runExperiment(deferred), [deferred]);

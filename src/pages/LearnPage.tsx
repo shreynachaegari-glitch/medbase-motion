@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { categories, diseases } from "@/data/knowledge";
+import BodyMap from "@/components/BodyMap";
 import { cn } from "@/lib/utils";
 
 const LearnPage = () => {
@@ -39,7 +40,9 @@ const LearnPage = () => {
                     </p>
                 </header>
 
-                <div className="mt-8 flex flex-col gap-4 border-y border-border py-4 sm:flex-row sm:items-center">
+                <BodyMap />
+
+                <div className="mt-10 flex flex-col gap-4 border-y border-border py-4 sm:flex-row sm:items-center">
                     <div className="flex-1">
                         <label htmlFor="condition-search" className="sr-only">
                             Search conditions
