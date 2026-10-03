@@ -142,15 +142,24 @@ export const AuthButton = () => {
 export const ResearcherBar = () => {
     const { researcher } = useResearcher();
     return (
-        <div className="border-b border-border bg-card/40 px-4 py-2 text-xs text-muted-foreground sm:px-6">
+        <div className="border-b border-border bg-card/40 px-4 py-5 text-center">
             {researcher ? (
-                <>
-                    Researcher <span className="text-foreground">{researcher.name}</span> &middot; ID{" "}
-                    <span className="font-mono text-foreground">{researcher.id}</span> &middot; simulations and Lab
-                    sessions are tagged to this ID in this browser.
-                </>
+                <div className="mx-auto flex max-w-xl flex-col items-center gap-2">
+                    <p className="label-caps">Researcher ID</p>
+                    <p className="rounded-md border border-border bg-background px-5 py-2 font-mono text-2xl font-semibold tracking-widest">
+                        {researcher.id}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                        {researcher.name} &middot; Lab sessions and simulations are tagged to this ID in this browser.
+                    </p>
+                </div>
             ) : (
-                <>Use the Lab as a guest, or sign in as a researcher (header) to get a researcher ID for your simulations.</>
+                <div className="mx-auto flex max-w-xl flex-col items-center gap-3">
+                    <p className="text-sm text-muted-foreground">
+                        Sign in as a researcher to get your researcher ID for simulations and Lab work.
+                    </p>
+                    <AuthButton />
+                </div>
             )}
         </div>
     );
