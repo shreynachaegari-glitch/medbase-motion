@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "@/pages/Index";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import ScrollManager from "@/components/ScrollManager";
+import Chatbot from "@/components/Chatbot";
+import { AuthProvider } from "@/components/ResearcherAuth";
 
 // Each page past the landing page loads on first visit, so the landing page no longer ships
 // the Lab's charts, database clients and simulation engine up front.
@@ -26,8 +28,10 @@ function App() {
         <ErrorBoundary>
             {/* import.meta.env.BASE_URL tracks vite.config.ts's `base` (e.g. "/medbase-motion/"
                 on GitHub Pages, "/" in dev) so routes resolve correctly under either. */}
+            <AuthProvider>
             <BrowserRouter basename={import.meta.env.BASE_URL}>
                 <ScrollManager />
+                <Chatbot />
                 <Suspense fallback={<PageFallback />}>
                     <Routes>
                         <Route path="/" element={<Index />} />
@@ -41,6 +45,7 @@ function App() {
                     </Routes>
                 </Suspense>
             </BrowserRouter>
+            </AuthProvider>
         </ErrorBoundary>
     );
 }

@@ -3,6 +3,7 @@ import { NavLink, Link, useLocation } from "react-router-dom";
 import { motion } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AuthButton } from "@/components/ResearcherAuth";
 
 const nav = [
     { to: "/learn", label: "Learn" },
@@ -56,6 +57,8 @@ const Header = () => {
                     })}
                 </nav>
 
+                <div className="hidden sm:block"><AuthButton /></div>
+
                 {/* Five links do not fit beside the wordmark on a phone, so they fold into a menu. */}
                 <button
                     type="button"
@@ -76,6 +79,7 @@ const Header = () => {
                     className="border-t border-border px-2 pb-3 pt-2 sm:hidden"
                     onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
                 >
+                    <div className="px-1 pb-2"><AuthButton /></div>
                     {nav.map((item) => (
                         <NavLink
                             key={item.to}

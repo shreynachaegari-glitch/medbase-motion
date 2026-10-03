@@ -8,6 +8,7 @@ import LiteraturePanel from "@/components/lab/LiteraturePanel";
 import TrialsPanel from "@/components/lab/TrialsPanel";
 import DrugPanel from "@/components/lab/DrugPanel";
 import GenePanel from "@/components/lab/GenePanel";
+import { ResearcherBar } from "@/components/ResearcherAuth";
 import { decodeExperiment, encodeExperiment, type ExperimentConfig } from "@/sim/experiment";
 import { databases } from "@/data/sources/registry";
 import { diseases, getDiseaseById, modelledConditions, type Disease } from "@/data/knowledge";
@@ -144,6 +145,7 @@ const LabPage = () => {
     return (
         <div className="flex min-h-screen flex-col">
             <Header />
+            <ResearcherBar />
 
             <main className="flex-1">
                 <div className="border-b border-border">

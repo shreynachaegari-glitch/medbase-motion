@@ -83,6 +83,34 @@ const ConditionPage = () => {
                             ))}
                         </div>
 
+                        {condition.environment && (
+                            <section className="mt-10 border-t border-border pt-5">
+                                <h2 className="label-caps">Environment and region</h2>
+                                <div className="mt-4 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+                                    {(
+                                        [
+                                            ["Regional effects", condition.environment.regions],
+                                            ["Temperature", condition.environment.temperature],
+                                            ["Soil", condition.environment.soil],
+                                            ["Food and nutrition", condition.environment.food],
+                                        ] as const
+                                    ).map(([title, items]) => (
+                                        <div key={title}>
+                                            <h3 className="text-sm font-medium">{title}</h3>
+                                            <ul className="mt-2 space-y-2">
+                                                {items.map((item) => (
+                                                    <li key={item} className="flex gap-2.5 text-sm leading-relaxed text-muted-foreground">
+                                                        <span className="text-border">&mdash;</span>
+                                                        <span>{item}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
+
                         <section className="mt-10 border-t border-border pt-5">
                             <h2 className="label-caps">Sources</h2>
                             <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2">

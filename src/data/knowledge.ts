@@ -30,6 +30,16 @@ export interface Disease {
         drugs: string[];
         genes: string[];
     };
+    /**
+     * Environmental context: where and under what conditions the condition occurs. Qualitative
+     * and drawn from the cited sources - not a risk score and not an input to any model.
+     */
+    environment?: {
+        regions: string[];
+        temperature: string[];
+        soil: string[];
+        food: string[];
+    };
     labModel?: {
         /** The only implemented model today; lives in src/sim. */
         id: "t2d-progression";
@@ -173,7 +183,8 @@ export const diseases: Disease[] = [
             { name: "ICMR", url: "https://icmr.gov.in" }
         ],
         keywords: ["dengue", "mosquito", "fever", "aedes", "viral"],
-        research: { term: "dengue", drugs: ["acetaminophen"], genes: [] }
+        research: { term: "dengue", drugs: ["acetaminophen"], genes: [] },
+        environment: { regions: ["Tropical and subtropical regions, including South and Southeast Asia, the Americas and the Western Pacific", "Urban and semi-urban areas where Aedes mosquitoes breed in stored water"], temperature: ["Transmission rises in warm, humid conditions; mosquito development speeds up with warmth", "Outbreaks often follow the rainy season"], soil: ["Not soil-borne; breeding sites are standing water in containers, tyres and coolers"], food: ["Not food-borne", "Maintain hydration and nutrition during illness"] }
     },
     {
         id: "malaria",
@@ -214,7 +225,8 @@ export const diseases: Disease[] = [
             { name: "NVBDCP", url: "https://nvbdcp.gov.in" }
         ],
         keywords: ["malaria", "mosquito", "plasmodium", "fever", "anopheles"],
-        research: { term: "malaria", drugs: ["artemether", "atovaquone", "chloroquine", "primaquine"], genes: ["HBB", "G6PD", "ACKR1"] }
+        research: { term: "malaria", drugs: ["artemether", "atovaquone", "chloroquine", "primaquine"], genes: ["HBB", "G6PD", "ACKR1"] },
+        environment: { regions: ["Sub-Saharan Africa carries most cases; also South and Southeast Asia, the Eastern Mediterranean and the Americas"], temperature: ["Parasite development in the Anopheles mosquito depends on warmth; transmission is seasonal where temperature or rainfall varies"], soil: ["Not soil-borne; mosquitoes breed in pools, irrigated fields and slow water"], food: ["Not food-borne", "Malnutrition raises the risk of severe disease in children"] }
     },
     {
         id: "covid-19",
@@ -298,7 +310,8 @@ export const diseases: Disease[] = [
             { name: "RNTCP India", url: "https://tbcindia.gov.in" }
         ],
         keywords: ["tuberculosis", "tb", "lung infection", "bacterial", "dots"],
-        research: { term: "tuberculosis", drugs: ["isoniazid", "rifampin", "pyrazinamide", "ethambutol", "bedaquiline"], genes: ["IFNGR1", "IL12RB1"] }
+        research: { term: "tuberculosis", drugs: ["isoniazid", "rifampin", "pyrazinamide", "ethambutol", "bedaquiline"], genes: ["IFNGR1", "IL12RB1"] },
+        environment: { regions: ["Highest burden in South-East Asia, Africa and the Western Pacific; India is among the highest-burden countries"], temperature: ["No strong temperature dependence; spread tracks indoor crowding and poor ventilation, which rise in cold seasons"], soil: ["Not soil-borne for humans"], food: ["Undernutrition is a major risk factor", "Unpasteurised milk from infected cattle can carry M. bovis"] }
     },
     {
         id: "typhoid",
@@ -337,7 +350,8 @@ export const diseases: Disease[] = [
             { name: "MedlinePlus", url: "https://medlineplus.gov/typhoidfever.html" }
         ],
         keywords: ["typhoid", "salmonella", "fever", "water-borne", "food poisoning"],
-        research: { term: "typhoid fever", drugs: ["ciprofloxacin", "azithromycin", "ceftriaxone"], genes: [] }
+        research: { term: "typhoid fever", drugs: ["ciprofloxacin", "azithromycin", "ceftriaxone"], genes: [] },
+        environment: { regions: ["South Asia and sub-Saharan Africa, wherever sanitation and safe water are limited"], temperature: ["Cases often peak in hotter, wetter months when water contamination is more likely"], soil: ["Faecal contamination of soil and sewage can reach water sources and irrigated produce"], food: ["Contaminated water, street food and raw produce washed in unsafe water", "Handwashing and safe food handling reduce risk"] }
     },
     {
         id: "cholera",
@@ -376,7 +390,8 @@ export const diseases: Disease[] = [
             { name: "MedlinePlus", url: "https://medlineplus.gov/cholera.html" }
         ],
         keywords: ["cholera", "diarrhea", "water-borne", "dehydration", "ors"],
-        research: { term: "cholera", drugs: ["doxycycline", "azithromycin"], genes: ["CFTR"] }
+        research: { term: "cholera", drugs: ["doxycycline", "azithromycin"], genes: ["CFTR"] },
+        environment: { regions: ["Regions without safe water and sanitation, including parts of Africa, South Asia and Yemen", "Outbreaks after floods, conflict and displacement"], temperature: ["Vibrio cholerae survives in warm coastal and brackish water; outbreaks often follow warm, rainy periods"], soil: ["Faecal contamination of soil and surface water spreads the bacterium"], food: ["Contaminated water, raw or undercooked seafood and unwashed produce", "Oral rehydration is the core of treatment"] }
     },
     {
         id: "asthma",
@@ -749,6 +764,123 @@ export const diseases: Disease[] = [
         ],
         keywords: ["diabetic retinopathy", "diabetes", "vision loss", "retina", "eye"],
         research: { term: "diabetic retinopathy", drugs: ["aflibercept", "ranibizumab", "faricimab"], genes: ["VEGFA"] }
+    },
+    {
+        id: "bone-tb",
+        name: "Bone and Joint Tuberculosis (Skeletal TB)",
+        category: "Infectious",
+        description: "Tuberculosis that has spread from the lungs or elsewhere to the bones and joints. The spine is the most commonly affected site, where it is known as Pott disease. It develops slowly, so diagnosis is often delayed.",
+        causes: [
+            "Mycobacterium tuberculosis reaching bone through the bloodstream, usually from a lung or lymph node focus",
+            "Reactivation of dormant infection",
+            "Less commonly, spread from adjacent infected tissue"
+        ],
+        riskFactors: [
+            "Living with or exposed to active pulmonary TB",
+            "HIV/AIDS and other immune suppression",
+            "Malnutrition",
+            "Diabetes",
+            "Crowded living conditions",
+            "Residence in a high TB-burden region"
+        ],
+        prevention: [
+            "Finding and treating pulmonary TB early",
+            "Completing the full treatment course",
+            "BCG vaccination in early childhood where recommended",
+            "Good ventilation and infection control",
+            "Screening and preventive treatment for high-risk contacts"
+        ],
+        treatment: [
+            "Multi-drug anti-TB regimen, usually the same first-line drugs used for pulmonary TB",
+            "Treatment is often longer than for lung TB; duration depends on the guideline and the response",
+            "Drug-susceptibility testing, because drug-resistant TB needs a different regimen",
+            "Surgery for spinal instability, nerve compression or large abscesses",
+            "Bracing, rest and physiotherapy during recovery"
+        ],
+        sources: [
+            { name: "WHO", url: "https://www.who.int/news-room/fact-sheets/detail/tuberculosis" },
+            { name: "MedlinePlus", url: "https://medlineplus.gov/tuberculosis.html" },
+            { name: "CDC", url: "https://www.cdc.gov/tb/" }
+        ],
+        keywords: ["bone tb", "skeletal tuberculosis", "pott disease", "spinal tb", "spine", "joint", "tuberculosis", "bone infection"],
+        research: { term: "skeletal tuberculosis", drugs: ["isoniazid", "rifampin", "pyrazinamide", "ethambutol"], genes: [] },
+        environment: { regions: ["Highest burden where TB is common, including South-East Asia and Africa", "Cases follow the pulmonary TB burden in a community"], temperature: ["No direct temperature dependence; spread follows crowding and poor ventilation, which increase in cold seasons"], soil: ["Not soil-borne"], food: ["Undernutrition raises risk and slows recovery", "Unpasteurised milk from infected cattle can carry M. bovis"] }
+    },
+    {
+        id: "osteomyelitis",
+        name: "Osteomyelitis (Bone Infection)",
+        category: "Musculoskeletal",
+        description: "An infection of the bone, most often bacterial. It can follow an injury, surgery or spread through the blood, and can become long-lasting if untreated.",
+        causes: [
+            "Bacteria, most commonly Staphylococcus aureus",
+            "Open fractures or bone surgery",
+            "Spread from a nearby skin or soft-tissue infection, such as a diabetic foot ulcer",
+            "Spread through the bloodstream"
+        ],
+        riskFactors: [
+            "Diabetes with foot ulcers",
+            "Recent bone injury or surgery",
+            "Poor circulation",
+            "Weakened immune system",
+            "Intravenous drug use"
+        ],
+        prevention: [
+            "Prompt cleaning and care of wounds",
+            "Daily foot care in people with diabetes",
+            "Good surgical and infection-control practice",
+            "Managing diabetes and circulation"
+        ],
+        treatment: [
+            "Prolonged antibiotics, often several weeks, chosen using culture results",
+            "Surgical removal of dead or infected bone",
+            "Draining abscesses",
+            "Treating the underlying cause, such as blood sugar control"
+        ],
+        sources: [
+            { name: "MedlinePlus", url: "https://medlineplus.gov/osteomyelitis.html" }
+        ],
+        keywords: ["osteomyelitis", "bone infection", "bone", "staphylococcus"],
+        research: { term: "osteomyelitis", drugs: ["cefazolin", "vancomycin", "clindamycin"], genes: [] },
+        environment: { regions: ["Worldwide; higher where injuries, diabetes and limited surgical care are common"], temperature: ["No direct temperature dependence"], soil: ["Wounds contaminated with soil can introduce bacteria, so thorough wound cleaning matters"], food: ["Good nutrition supports healing", "No food-borne route"] }
+    },
+    {
+        id: "osteoporosis",
+        name: "Osteoporosis",
+        category: "Musculoskeletal",
+        description: "A condition in which bones lose density and strength, making fractures more likely, most often of the hip, spine and wrist. It usually causes no symptoms until a fracture occurs.",
+        causes: [
+            "Age-related bone loss",
+            "Fall in oestrogen after menopause",
+            "Long-term corticosteroid use",
+            "Low calcium or vitamin D status over time"
+        ],
+        riskFactors: [
+            "Older age and female sex",
+            "Family history of fracture",
+            "Low body weight",
+            "Smoking and heavy alcohol use",
+            "Physical inactivity",
+            "Certain conditions and medicines"
+        ],
+        prevention: [
+            "Adequate calcium and vitamin D intake",
+            "Weight-bearing and resistance exercise",
+            "Not smoking and limiting alcohol",
+            "Fall-prevention measures"
+        ],
+        treatment: [
+            "Calcium and vitamin D where intake is low",
+            "Bone-strengthening medicines such as bisphosphonates",
+            "Fracture-risk assessment",
+            "Exercise and falls-prevention programmes"
+        ],
+        sources: [
+            { name: "MedlinePlus", url: "https://medlineplus.gov/osteoporosis.html" },
+            { name: "WHO", url: "https://www.who.int/health-topics/musculoskeletal-conditions" }
+        ],
+        keywords: ["osteoporosis", "bone density", "fracture", "bone loss", "calcium"],
+        research: { term: "osteoporosis", drugs: ["alendronate", "denosumab", "zoledronic acid"], genes: ["LRP5", "COL1A1"] },
+        environment: { regions: ["Worldwide; fracture rates differ by region and are higher in older populations"], temperature: ["Little direct effect; low sunlight at high latitudes and in winter reduces skin vitamin D production"], soil: ["Not soil-borne"], food: ["Dietary calcium, vitamin D and protein support bone health", "Very low intake of any of these raises risk"] }
     }
 ];
 
