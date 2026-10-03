@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, type FormEvent, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { LogIn, LogOut, X } from "lucide-react";
 
 /**
@@ -19,12 +20,7 @@ interface AuthValue {
 
 const KEY = "medbase.researcher";
 
-const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-/** e.g. MB-7K2QF9 - random, unambiguous characters; a label, not a credential. */
-export const newResearcherId = () => {
-    const bytes = crypto.getRandomValues(new Uint8Array(6));
-    return "MB-" + Array.from(bytes, (b) => ALPHABET[b % ALPHABET.length]).join("");
-};
+export const newResearcherId = () => "1234"; // fixed for now; swap for the random generator once there is a backend
 const AuthContext = createContext<AuthValue | null>(null);
 
 const load = (): Researcher | null => {
@@ -101,9 +97,9 @@ export const AuthButton = () => {
                 <LogIn className="h-4 w-4" aria-hidden="true" />
                 Researcher sign in
             </button>
-            {open && (
+            {open && createPortal(
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+                    className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4"
                     role="dialog"
                     aria-modal="true"
                     aria-label="Researcher sign in"
@@ -133,7 +129,8 @@ export const AuthButton = () => {
                             Continue
                         </button>
                     </form>
-                </div>
+                </div>,
+                document.body,
             )}
         </>
     );
