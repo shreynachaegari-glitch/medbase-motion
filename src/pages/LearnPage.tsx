@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { categories, diseases } from "@/data/knowledge";
 import BodyMap from "@/components/BodyMap";
+import ScrollJourney from "@/components/ScrollJourney";
 import { cn } from "@/lib/utils";
 
 const LearnPage = () => {
@@ -41,6 +42,7 @@ const LearnPage = () => {
                 </header>
 
                 <BodyMap />
+                <ScrollJourney />
 
                 <div className="mt-10 flex flex-col gap-4 border-y border-border py-4 sm:flex-row sm:items-center">
                     <div className="flex-1">

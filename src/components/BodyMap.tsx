@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getDiseaseById } from "@/data/knowledge";
 import { cn } from "@/lib/utils";
+import { OrganModal, type OrganId } from "@/components/OrganExplorer";
 
 /**
  * An interactive body map for learning where conditions in the library show up. It is a
@@ -15,6 +16,7 @@ interface Area {
     shape: { type: "ellipse"; cx: number; cy: number; rx: number; ry: number } | { type: "rect"; x: number; y: number; w: number; h: number; r?: number };
     signs: string;
     conditions: string[];
+    organ?: OrganId;
 }
 
 const AREAS: Area[] = [
@@ -24,6 +26,7 @@ const AREAS: Area[] = [
         shape: { type: "ellipse", cx: 100, cy: 40, rx: 26, ry: 32 },
         signs: "Headache, confusion, sudden weakness on one side, face drooping, seizures, low mood.",
         conditions: ["stroke", "depression", "rabies", "dengue", "malaria"],
+        organ: "brain",
     },
     {
         id: "eyes",
@@ -38,6 +41,7 @@ const AREAS: Area[] = [
         shape: { type: "rect", x: 66, y: 92, w: 68, h: 52, r: 18 },
         signs: "Cough, breathlessness, wheeze, chest tightness, coughing up blood in some infections.",
         conditions: ["tuberculosis", "pneumonia", "asthma", "covid-19"],
+        organ: "lungs",
     },
     {
         id: "heart",
@@ -45,6 +49,7 @@ const AREAS: Area[] = [
         shape: { type: "ellipse", cx: 112, cy: 124, rx: 14, ry: 14 },
         signs: "Chest pressure, breathlessness, palpitations, swollen ankles, often no symptoms in high blood pressure.",
         conditions: ["heart-disease", "myocardial-infarction", "heart-failure", "hypertension"],
+        organ: "heart",
     },
     {
         id: "abdomen",
@@ -110,7 +115,24 @@ const Hotspot = ({ area, active, onSelect }: { area: Area; active: boolean; onSe
     );
 };
 
+/** The plain body outline, shared with the scroll journey. */
+export const BodySilhouette = ({ highlight }: { highlight?: "heart" }) => (
+    <svg viewBox="0 0 200 440" className="h-full w-full">
+        <g className="fill-secondary stroke-border" strokeWidth={1.5}>
+            <ellipse cx="100" cy="40" rx="26" ry="32" />
+            <rect x="90" y="68" width="20" height="22" rx="6" />
+            <rect x="56" y="88" width="88" height="130" rx="30" />
+            <rect x="20" y="96" width="30" height="130" rx="15" />
+            <rect x="150" y="96" width="30" height="130" rx="15" />
+            <rect x="64" y="212" width="34" height="200" rx="16" />
+            <rect x="102" y="212" width="34" height="200" rx="16" />
+        </g>
+        {highlight === "heart" && <path d="M112 136 C100 126 100 114 108 114 C111 114 112 117 112 117 C112 117 113 114 116 114 C124 114 124 126 112 136 Z" fill="hsl(355 75% 55%)" />}
+    </svg>
+);
+
 const BodyMap = () => {
+    const [organ, setOrgan] = useState<OrganId | null>(null);
     const [selected, setSelected] = useState<string>("lungs");
     const area = AREAS.find((a) => a.id === selected)!;
     const conditions = area.conditions.map((id) => getDiseaseById(id)).filter((d) => d !== undefined);
@@ -140,7 +162,7 @@ const BodyMap = () => {
                             <rect x="102" y="212" width="34" height="200" rx="16" />
                         </g>
                         {AREAS.map((a) => (
-                            <Hotspot key={a.id} area={a} active={a.id === selected} onSelect={() => setSelected(a.id)} />
+                            <Hotspot key={a.id} area={a} active={a.id === selected} onSelect={() => (a.id === selected && a.organ ? setOrgan(a.organ) : setSelected(a.id))} />
                         ))}
                     </svg>
                 </div>
@@ -164,7 +186,18 @@ const BodyMap = () => {
                     </div>
 
                     <div aria-live="polite" className="mt-5">
-                        <h3 className="text-base font-medium">{area.label}</h3>
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                            <h3 className="text-base font-medium">{area.label}</h3>
+                            {area.organ && (
+                                <button
+                                    type="button"
+                                    onClick={() => setOrgan(area.organ!)}
+                                    className="rounded-md bg-foreground px-3 py-1.5 text-xs font-medium text-background hover:opacity-90"
+                                >
+                                    Look inside the {area.organ} &rarr;
+                                </button>
+                            )}
+                        </div>
                         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                             <span className="label-caps mr-2">Signs people may notice</span>
                             {area.signs}
@@ -186,6 +219,7 @@ const BodyMap = () => {
                     </div>
                 </div>
             </div>
+            <OrganModal organ={organ} onClose={() => setOrgan(null)} />
         </section>
     );
 };
