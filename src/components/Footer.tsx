@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { databases } from "@/data/sources/registry";
 
 const Footer = () => (
     <footer className="mt-16 border-t border-border">
@@ -30,9 +31,13 @@ const Footer = () => (
                     </Link>
                 </nav>
             </div>
-            <p className="mt-8 text-xs text-muted-foreground">
-                Literature records retrieved from PubMed; trial records from ClinicalTrials.gov.
-                Prototype build — re-verify every parameter and snapshot before research use.
+            <p className="mt-8 text-xs leading-relaxed text-muted-foreground">
+                Model evidence retrieved from PubMed and ClinicalTrials.gov at build time. The Lab also
+                queries {databases.length} public research databases live from your browser —{" "}
+                <Link to="/evidence#databases" className="hover:text-foreground hover:underline">
+                    see which, and their caveats
+                </Link>
+                . Prototype build — re-verify every parameter and snapshot before research use.
             </p>
         </div>
     </footer>

@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CitationLink } from "@/components/Provenance";
-import { baseParams, treatmentArms, hbA1cLogHazard, referenceHbA1c } from "@/sim/params";
+import { baseParams, spreadParams, treatmentArms, hbA1cLogHazard, referenceHbA1c } from "@/sim/params";
 import { betaMicro, betaMi } from "@/sim/model";
 import { citations } from "@/sim/citations";
 
@@ -26,6 +26,11 @@ const equations = [
         body: "F(T) = 1 − Π ( 1 − h(t) ) , t = 1…T",
         note: "Discrete-time survival. Events are treated as absorbing and independent between endpoints.",
     },
+    {
+        label: "Cohort sampling",
+        body: "HbA1c₀ᵢ ~ N( HbA1c₀ , σ²ₐ ) , driftᵢ ~ max( 0 , N( drift , σ²_d ) ) , durationᵢ ~ max( 0 , N( duration , σ²ₜ ) )",
+        note: "Cohort mode draws each virtual patient from these, seeded. Every arm is run on the same draws, so differences between arms are paired. Percentile bands describe spread across patients — they are not confidence intervals and carry no parameter uncertainty.",
+    },
 ];
 
 const notModelled = [
@@ -36,6 +41,7 @@ const notModelled = [
     "Early worsening of retinopathy after rapid glycaemic improvement — a documented effect that this model's monotonic structure cannot represent at all.",
     "Between-patient heterogeneity in treatment response: every virtual patient in an arm gets an identical effect size.",
     "Any absolute calibration to an observed cohort. The model has never been fitted to outcome data.",
+    "Anything retrieved by the Lab's live database panels. Those results are shown for reading, never fed into a parameter — a search hit has not been appraised.",
 ];
 
 const MethodsPage = () => (
@@ -136,9 +142,14 @@ const MethodsPage = () => (
                             </tr>
                         </thead>
                         <tbody>
-                            {baseParams.map((p) => (
+                            {[...baseParams, ...spreadParams].map((p) => (
                                 <tr key={p.id} className="border-b border-border/60 align-top">
-                                    <td className="py-3 pr-4">{p.label}</td>
+                                    <td className="py-3 pr-4">
+                                        {p.label}
+                                        {spreadParams.includes(p) && (
+                                            <span className="label-caps ml-2 text-[10px]">cohort only</span>
+                                        )}
+                                    </td>
                                     <td className="tnum py-3 text-right">
                                         {p.value} {p.unit}
                                     </td>

@@ -193,6 +193,54 @@ export const baseParams: ParamSpec[] = [
     },
 ];
 
+/**
+ * Between-patient spread for cohort mode. These were once constants buried in the Lab page;
+ * they shape every percentile band and histogram, so they carry provenance like any other
+ * input. They only matter when a cohort is sampled — a single virtual patient ignores them.
+ */
+export const spreadParams: ParamSpec[] = [
+    {
+        id: "hbA1cSd",
+        label: "Baseline HbA1c spread (SD)",
+        unit: "%",
+        value: 0.8,
+        min: 0,
+        max: 2.0,
+        step: 0.05,
+        provenance: {
+            kind: "illustrative",
+            reason: "Sets how varied entry HbA1c is across the cohort. Chosen to give a plausible clinic-population spread around the baseline; not taken from a cited cohort.",
+        },
+    },
+    {
+        id: "driftSd",
+        label: "Drift spread (SD)",
+        unit: "%/year",
+        value: 0.44,
+        min: 0,
+        max: 1.0,
+        step: 0.01,
+        provenance: {
+            kind: "derived",
+            citation: citations.wallace2002,
+            quote: "Chlorpropamide-treated patients showed a mean coefficient of failure of 0.34 HbA1c%/year (SD 0.44); glibenclamide-treated patients 0.50%/year (SD 0.50).",
+        },
+    },
+    {
+        id: "durationSd",
+        label: "Duration spread (SD)",
+        unit: "years",
+        value: 3,
+        min: 0,
+        max: 10,
+        step: 0.5,
+        provenance: {
+            kind: "illustrative",
+            reason: "Sets how varied time-since-diagnosis is across the cohort. No published distribution was used.",
+        },
+    },
+];
+
 export const getParam = (params: ParamSpec[], id: string): number => {
     const found = params.find((p) => p.id === id);
     if (!found) throw new Error(`Unknown parameter: ${id}`);

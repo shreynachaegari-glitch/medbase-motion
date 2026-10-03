@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
 import { motion } from "motion/react";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AuthButton } from "@/components/ResearcherAuth";
 
 const nav = [
     { to: "/learn", label: "Learn" },
@@ -12,16 +15,17 @@ const nav = [
 
 const Header = () => {
     const { pathname } = useLocation();
+    const [open, setOpen] = useState(false);
 
     return (
         <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-xl">
             <div className="mx-auto flex h-14 max-w-[1400px] items-center gap-4 px-4 sm:px-6">
-                <Link to="/" className="flex items-baseline gap-2">
+                <Link to="/" className="flex items-baseline gap-2" onClick={() => setOpen(false)}>
                     <span className="text-[15px] font-semibold tracking-tight">MedBase</span>
                     <span className="label-caps hidden sm:inline">Virtual Laboratory</span>
                 </Link>
 
-                <nav className="ml-auto flex items-center gap-0.5 sm:gap-1">
+                <nav aria-label="Main" className="ml-auto hidden items-center gap-1 sm:flex">
                     {nav.map((item) => {
                         const active = pathname.startsWith(item.to);
                         return (
@@ -29,7 +33,7 @@ const Header = () => {
                                 key={item.to}
                                 to={item.to}
                                 className={cn(
-                                    "relative px-2 py-1.5 text-sm transition-colors sm:px-3",
+                                    "relative px-3 py-1.5 text-sm transition-colors",
                                     active
                                         ? "text-foreground"
                                         : "text-muted-foreground hover:text-foreground",
@@ -52,7 +56,47 @@ const Header = () => {
                         );
                     })}
                 </nav>
+
+                <div className="hidden sm:block"><AuthButton /></div>
+
+                {/* Five links do not fit beside the wordmark on a phone, so they fold into a menu. */}
+                <button
+                    type="button"
+                    onClick={() => setOpen((v) => !v)}
+                    aria-expanded={open}
+                    aria-controls="mobile-nav"
+                    aria-label={open ? "Close menu" : "Open menu"}
+                    className="ml-auto inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground sm:hidden"
+                >
+                    {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+                </button>
             </div>
+
+            {open && (
+                <nav
+                    id="mobile-nav"
+                    aria-label="Main"
+                    className="border-t border-border px-2 pb-3 pt-2 sm:hidden"
+                    onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
+                >
+                    <div className="px-1 pb-2"><AuthButton /></div>
+                    {nav.map((item) => (
+                        <NavLink
+                            key={item.to}
+                            to={item.to}
+                            onClick={() => setOpen(false)}
+                            className={({ isActive }) =>
+                                cn(
+                                    "block rounded-md px-3 py-2.5 text-sm",
+                                    isActive ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground",
+                                )
+                            }
+                        >
+                            {item.label}
+                        </NavLink>
+                    ))}
+                </nav>
+            )}
         </header>
     );
 };

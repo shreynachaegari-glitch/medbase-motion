@@ -34,6 +34,8 @@ export interface CohortResult {
     microP10: number[];
     microP90: number[];
     miMean: number[];
+    miP10: number[];
+    miP90: number[];
     /** Per-patient cumulative incidence at the horizon, for the outcome distribution. */
     finalMicro: number[];
     finalMi: number[];
@@ -83,6 +85,7 @@ export const runCohort = (
 
     const sortedHbA1c = byYearHbA1c.map((xs) => [...xs].sort((a, b) => a - b));
     const sortedMicro = byYearMicro.map((xs) => [...xs].sort((a, b) => a - b));
+    const sortedMi = byYearMi.map((xs) => [...xs].sort((a, b) => a - b));
 
     return {
         armId: arm.id,
@@ -94,6 +97,8 @@ export const runCohort = (
         microP10: sortedMicro.map((xs) => percentile(xs, 0.1)),
         microP90: sortedMicro.map((xs) => percentile(xs, 0.9)),
         miMean: byYearMi.map(mean),
+        miP10: sortedMi.map((xs) => percentile(xs, 0.1)),
+        miP90: sortedMi.map((xs) => percentile(xs, 0.9)),
         finalMicro: byYearMicro[horizonYears],
         finalMi: byYearMi[horizonYears],
     };
@@ -109,6 +114,8 @@ export interface SensitivityEntry {
     swing: number;
 }
 
+export type Endpoint = "micro" | "mi";
+
 /**
  * One-at-a-time sweep. Deliberately reports the *swing* in the headline outcome so a
  * parameter with no published backing that dominates the result is visible rather than buried.
@@ -119,10 +126,11 @@ export const sensitivitySweep = (
     constants: ModelConstants,
     horizonYears: number,
     sweeps: { id: string; label: string; low: number; high: number }[],
+    endpoint: Endpoint = "micro",
 ): SensitivityEntry[] => {
     const outcomeFor = (p: PatientInput, c: ModelConstants) => {
-        const pts = simulatePatient(p, arm, c, horizonYears);
-        return pts[pts.length - 1].cumulativeMicro;
+        const last = simulatePatient(p, arm, c, horizonYears).at(-1)!;
+        return endpoint === "mi" ? last.cumulativeMi : last.cumulativeMicro;
     };
 
     const applied = (id: string, value: number): [PatientInput, ModelConstants] => {
