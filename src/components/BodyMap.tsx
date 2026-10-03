@@ -143,6 +143,9 @@ const BodyMap = () => {
             <h2 id="body-map-title" className="mt-2 text-lg font-semibold tracking-tight">
                 Explore by body area
             </h2>
+            <Link to="/anatomy" className="mt-2 inline-block text-sm text-primary hover:underline">
+                Open the 3D anatomy explorer &rarr;
+            </Link>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
                 Select an area to see which conditions in the library can involve it and the signs people may notice.
                 This is for learning only. It is not a symptom checker and cannot tell you what you have.

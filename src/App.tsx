@@ -12,6 +12,7 @@ import { AuthProvider } from "@/components/ResearcherAuth";
 const LearnPage = lazy(() => import("@/pages/LearnPage"));
 const ConditionPage = lazy(() => import("@/pages/ConditionPage"));
 const LabPage = lazy(() => import("@/pages/LabPage"));
+const AnatomyPage = lazy(() => import("@/pages/AnatomyPage"));
 const EvidencePage = lazy(() => import("@/pages/EvidencePage"));
 const MethodsPage = lazy(() => import("@/pages/MethodsPage"));
 const FundingPage = lazy(() => import("@/pages/FundingPage"));
@@ -39,6 +40,7 @@ function App() {
                         <Route path="/" element={<Index />} />
                         <Route path="/learn" element={<LearnPage />} />
                         <Route path="/learn/:id" element={<ConditionPage />} />
+                        <Route path="/anatomy" element={<AnatomyPage />} />
                         <Route path="/lab" element={<LabPage />} />
                         <Route path="/evidence" element={<EvidencePage />} />
                         <Route path="/methods" element={<MethodsPage />} />

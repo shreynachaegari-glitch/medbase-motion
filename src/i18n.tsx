@@ -16,6 +16,7 @@ export type LangId = (typeof LANGS)[number]["id"];
 
 const T: Record<string, Partial<Record<LangId, string>>> = {
     Learn: { hi: "सीखें", te: "నేర్చుకోండి", ta: "கற்க" },
+    Anatomy: { hi: "शरीर रचना", te: "శరీర నిర్మాణం", ta: "உடற்கூறியல்" },
     Lab: { hi: "प्रयोगशाला", te: "ల్యాబ్", ta: "ஆய்வகம்" },
     Evidence: { hi: "साक्ष्य", te: "ఆధారాలు", ta: "சான்றுகள்" },
     Methods: { hi: "पद्धति", te: "పద్ధతులు", ta: "முறைகள்" },
