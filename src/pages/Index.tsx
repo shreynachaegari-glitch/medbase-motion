@@ -24,8 +24,7 @@ const Index = () => {
         { value: String(diseases.length), label: "Condition records" },
         { value: String(modelFeeding.length), label: "Cited parameters" },
         { value: String(databases.length), label: "Live research databases" },
-        { value: "2,000", label: "Virtual patients per arm" },
-        { value: "0", label: "Validated clinical claims", accent: true },
+        { value: "4", label: "Interface languages", accent: true },
     ];
 
     return (
@@ -48,7 +47,7 @@ const Index = () => {
                                 className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs text-muted-foreground backdrop-blur transition-colors hover:text-foreground"
                             >
                                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-[hsl(var(--prov-extrapolated))]" />
-                                Prototype — illustrative models, not clinical guidance
+                                Evidence-based learning and research lab
                                 <span aria-hidden="true">→</span>
                             </Link>
                         </motion.div>

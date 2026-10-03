@@ -33,7 +33,7 @@ export const patientParamIds = ["baselineHbA1c", "driftRate", "diabetesDuration"
 export const constantParamIds = ["baselineMicroHazard", "baselineMiHazard", "durationHazardPerYear"] as const;
 
 export const HORIZON = { min: 2, max: 25 } as const;
-export const COHORT_N = { min: 100, max: 2000, step: 100 } as const;
+export const COHORT_N = { min: 100, max: 1000, step: 100 } as const;
 export const SEED_MAX = 999_999;
 
 export const defaultExperiment = (): ExperimentConfig => ({

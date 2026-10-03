@@ -51,11 +51,11 @@ describe("experiment URL codec", () => {
     });
 
     it("clamps and snaps hand-edited values instead of trusting them", () => {
-        const c = decodeExperiment(new URLSearchParams("a1c=99&drift=0.333333&years=400&n=1234&seed=-5&arms=metformin,bogus"));
+        const c = decodeExperiment(new URLSearchParams("a1c=99&drift=0.333333&years=400&n=734&seed=-5&arms=metformin,bogus"));
         expect(c.values.baselineHbA1c).toBe(12);
         expect(c.values.driftRate).toBe(0.33);
         expect(c.horizon).toBe(10);
-        expect(c.n).toBe(1200);
+        expect(c.n).toBe(700);
         expect(c.seed).toBe(42);
         expect(c.arms).toEqual(["metformin"]);
     });
